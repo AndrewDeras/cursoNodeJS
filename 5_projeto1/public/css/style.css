@@ -1,0 +1,15 @@
+h1 {
+  color: purple;
+}
+
+body {
+  background-color: #ccc;
+}
+
+.emblema-rm {
+  margin: 0 auto;
+}
+
+.emblema-rm img {
+  max-width: 50px;
+}

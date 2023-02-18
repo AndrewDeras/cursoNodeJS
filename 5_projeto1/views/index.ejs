@@ -4,9 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css">
     <title>Guia perguntas</title>
   </head>
   <body>
+    <div class="emblema-rm">
+      <img src="/img/realMadrid.svg" alt="">
+    </div>
     <h1>Guia perguntas</h1>
     <hr />
     <h3>Lista de perguntas</h3>
@@ -22,5 +26,12 @@
     <%} else {%>
       <h3>Nenhum erro</h3>
     <%}%>
+     
+    <% produtos.forEach((produto) =>{%>
+      <hr>
+        <h3>Produto:<%=produto.nome%></h3>
+        <h4>Preço:<%=produto.preco%></h4>
+      <hr>
+    <%}) %>
   </body>
 </html>

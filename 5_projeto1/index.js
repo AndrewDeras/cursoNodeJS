@@ -54,18 +54,35 @@ app.post('/salvarpergunta', (req, res) => {
 
 app.get('/pergunta/:id', (req, res) => {
   let id = req.params.id;
-
   Pergunta.findOne({
     where: { id: id }
   }).then((pergunta) => {
     if (pergunta != undefined) { //pergunta encontrada
-      res.render('pergunta', {
-        pergunta: pergunta
+      Resposta.findAll({
+        where: { pergunta_id: pergunta.id },
+        order: [['id', 'DESC']]
+      }).then(respostas => {
+        res.render('pergunta', {
+          pergunta: pergunta,
+          respostas: respostas
+        });
       });
     } else { // pergunta não encontrada
       res.redirect('/');
     }
   })
+});
+
+app.post('/responder', (req, res) => {
+  let pergunta_id = req.body.pergunta;
+  let corpo = req.body.corpo;
+
+  Resposta.create({
+    corpo: corpo,
+    pergunta_id: pergunta_id
+  }).then(() => {
+    res.redirect(`/pergunta/${pergunta_id}`);
+  });
 });
 
 app.listen(3939, () => console.log('server rodando em http://localhost:3939'));

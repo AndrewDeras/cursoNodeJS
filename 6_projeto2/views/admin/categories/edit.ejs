@@ -4,7 +4,7 @@
     <hr />
     <div class="card">
       <div class="card-header">
-        <h2>Cadastro de categoria</h2>
+        <h2>Edição de categoria</h2>
       </div>
       <div class="card-body">
         <form method="POST" action="/categories/save">
@@ -13,8 +13,9 @@
             type="text"
             name="title"
             placeholder="Defina o título da categoria"
+            value="<%= category.title %>"
           /><br />
-          <button class="btn btn-primary">Cadastrar</button>
+          <button class="btn btn-primary">Atualizar</button>
         </form>
       </div>
     </div>

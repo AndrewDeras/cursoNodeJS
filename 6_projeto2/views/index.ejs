@@ -1,5 +1,24 @@
 <%-include('partials/header.ejs')%>
 <body>
-  <h1>Testanto as views</h1>
+  <%-include('partials/homenavbar.ejs')%>
+  <div class="container">
+    <hr>
+    <div class="container-fluid py-5">
+      <h1 class="display-5 fw-bold">Bem vindo</h1>
+      <p class="col-md-8 fs-4">Este é um simples site feito no curso de nodeJS.</p>
+      <button class="btn btn-primary btn-lg" type="button">Leia mais</button>
+    </div>
+    <hr />
+    <% articles.forEach(({id, title, slug, body})=>{ %>
+    <div class="card">
+      <div class="card-header"><%=title%></div>
+      <div class="card-body">
+        <a href="/<%=slug%>" class="btn btn-success">Ler artigo</a>
+      </div>
+    </div>
+    <br />
+    <% }) %>
+  </div>
 </body>
 <%-include('partials/footer.ejs')%>
+

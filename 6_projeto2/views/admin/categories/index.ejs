@@ -1,6 +1,6 @@
 <%-include('../../partials/header.ejs')%>
 <%-include('../../partials/navbar.ejs')%>
-<div class="container">
+<div class="container pb-5 ">
   <hr />
   <h2>Categorias</h2>
   <a href="/admin/categories/new" class="btn btn-success">
@@ -23,16 +23,18 @@
         <td><%= title %></td>
         <td><%= slug %></td>
         <td>
-          <a href="/admin/categories/edit/<%=id%>" class="btn btn-warning">Editar</a>
-          <form
-            method="post"
-            action="/categories/delete"
-            onsubmit="confirmDelete(event, this)"
-            style="display: inline"
-          >
-            <input type="hidden" name="id" value="<%=id%>" />
-            <button class="btn btn-danger">Deletar</button>
-          </form>
+          <div class="d-flex justify-content-center align-items-center" >
+            <a href="/admin/categories/edit/<%=id%>" class="btn btn-warning me-1">Editar</a>
+            <form
+              method="post"
+              action="/categories/delete"
+              onsubmit="confirmDelete(event, this)"
+              style="display: inline"
+            >
+              <input type="hidden" name="id" value="<%=id%>" />
+              <button class="btn btn-danger">Deletar</button>
+            </form>
+          </div>
         </td>
       </tr>
       <%}) %>

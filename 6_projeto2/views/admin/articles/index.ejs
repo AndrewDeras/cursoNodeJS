@@ -1,11 +1,9 @@
 <%-include('../../partials/header.ejs')%>
 <%-include('../../partials/navbar.ejs')%>
-<div class="container">
+<div class="container pb-5 ">
   <hr />
   <h2>Artigos</h2>
-  <a href="/admin/articles/new" class="btn btn-success">
-    Criar novo artigo
-  </a>
+  <a href="/admin/articles/new" class="btn btn-success"> Criar novo artigo </a>
   <hr />
   <table class="table table-bordered">
     <thead>
@@ -19,22 +17,27 @@
     </thead>
     <tbody>
       <% articles.forEach(({id, title, slug, category})=>{ %>
-        <tr>
-          <td> <%= id %> </td>
-          <td> <%= title %> </td>
-          <td> <%= slug %> </td>
-          <td> <%= category.title%> </td>
-          <td>
+      <tr>
+        <td><%= id %></td>
+        <td><%= title %></td>
+        <td><%= slug %></td>
+        <td><%= category.title%></td>
+        <td>
+          <div class="d-flex justify-content-center align-items-center p-1 " >
+            <a href="/admin/articles/edit/<%=id%>" class="btn btn-warning m-1">
+              Editar
+            </a>
             <form
-              method="post"
+              method="POST"
               action="/articles/delete"
               onsubmit="confirmDelete(event, this)"
-            >
+              style="display: inline">
               <input type="hidden" name="id" value="<%=id%>" />
               <button class="btn btn-danger">Deletar</button>
             </form>
-          </td>
-        </tr>
+          </div>
+        </td>
+      </tr>
       <% }) %>
     </tbody>
   </table>
@@ -48,5 +51,5 @@
     if (decision) {
       form.submit();
     }
-  };
+  }
 </script>

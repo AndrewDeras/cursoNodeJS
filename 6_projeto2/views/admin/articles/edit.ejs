@@ -15,12 +15,18 @@
           id="article"
           class="form-control"
           value=""
-        ><%= article.body%></textarea>
+        ><%- article.body%></textarea>
         <br />
         <label>Categoria</label>
         <select name="category" class="form-control">
           <% categories.forEach(({id, title})=>{ %>
-          <option value="<%=id%>"><%=title%></option>
+            <% if( id === article.categoryId){ %>
+              <option selected value="<%=id%>"><%=title%></option>
+            <% }else { %>
+              <option value="<%=id%>"><%=title%></option>
+            <%}%>
+
+
           <% }) %></select>
           <br >
         <button class="btn btn-success">Atualizar</button>

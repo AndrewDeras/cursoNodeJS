@@ -13,5 +13,5 @@ class Dado {
 
 let dadoSeis = new Dado(6);
 let dadoVinte = new Dado(20);
-// dadoSeis.RolarDado();
+dadoSeis.RolarDado();
 dadoVinte.RolarDado();

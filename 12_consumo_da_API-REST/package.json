@@ -1,5 +1,5 @@
 {
-  "name": "11_introducao_api-rest",
+  "name": "12_consumo_da_api-rest",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,9 +8,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2"
-  }
+  "license": "ISC"
 }

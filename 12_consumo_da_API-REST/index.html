@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <title>API games</title>
+  </head>
+  <body>
+    <div class="container">
+      <hr />
+      <h4>Lista de games</h4>
+      <ul class="list-group" id="games"></ul>
+      <hr />
+      <h4>Novo Game</h4>
+      <div class="input-group">
+        <input
+          class="form-control"
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Título"
+        />
+        <input
+          class="form-control"
+          type="number"
+          name="year"
+          id="year"
+          placeholder="Ano"
+        />
+        <input
+          class="form-control"
+          type="number"
+          name="price"
+          id="price"
+          placeholder="Preço"
+        />
+        <button onclick="createGame()" class="btn btn-success">Criar</button>
+      </div>
+      <hr />
+      <h4>Editar game</h4>
+      <div class="input-group">
+        <input
+          class="form-control"
+          type="text"
+          name="idEdit"
+          id="idEdit"
+          placeholder="ID"
+          readonly
+        />
+        <input
+          class="form-control"
+          type="text"
+          name="titleEdit"
+          id="titleEdit"
+          placeholder="Título"
+        />
+        <input
+          class="form-control"
+          type="number"
+          name="yearEdit"
+          id="yearEdit"
+          placeholder="Ano"
+        />
+        <input
+          class="form-control"
+          type="number"
+          name="priceEdit"
+          id="priceEdit"
+          placeholder="Preço"
+        />
+        <button onclick="updateGame()" class="btn btn-success">Editar</button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+      function createGame() {
+        let titleInput = document.getElementById("title");
+        let yearInput = document.getElementById("year");
+        let priceInput = document.getElementById("price");
+
+        const game = {
+          title: titleInput.value,
+          year: yearInput.value,
+          price: priceInput.value,
+        };
+
+        axios
+          .post("http://localhost:3939/game", game)
+          .then((res) => {
+            if (res.status === 200) {
+              alert("Game cadastrado");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      function deleteGame(listItem) {
+        let id = listItem.getAttribute("data-id");
+        axios
+          .delete(`http://localhost:3939/game/${id}`)
+          .then((response) => {
+            alert("Game deletado");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      function loadForm(itemList) {
+        let id = itemList.getAttribute("data-id");
+        let title = itemList.getAttribute("data-title");
+        let year = itemList.getAttribute("data-year");
+        let price = itemList.getAttribute("data-price");
+
+        document.getElementById("idEdit").value = id;
+        document.getElementById("titleEdit").value = title;
+        document.getElementById("yearEdit").value = year;
+        document.getElementById("priceEdit").value = price;
+      }
+
+      function updateGame() {
+        let idInput = document.getElementById("idEdit");
+        let titleInput = document.getElementById("titleEdit");
+        let yearInput = document.getElementById("yearEdit");
+        let priceInput = document.getElementById("priceEdit");
+
+        const game = {
+          title: titleInput.value,
+          year: yearInput.value,
+          price: priceInput.value,
+        };
+
+        let id = idInput.value;
+
+        axios
+          .put(`http://localhost:3939/game/${id}`, game)
+          .then((res) => {
+            if (res.status === 200) {
+              alert("Game atualizado");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      axios
+        .get("http://localhost:3939/games")
+        .then((response) => {
+          const list = document.getElementById("games");
+
+          response.data.forEach(({ id, title, year, price }) => {
+            let item = document.createElement("li");
+            item.classList.add("list-group-item");
+            item.setAttribute("data-id", id);
+            item.setAttribute("data-title", title);
+            item.setAttribute("data-year", year);
+            item.setAttribute("data-price", price);
+            item.innerHTML = ` Id: ${id} - Nome: ${title} - Ano: ${year} - Preço: $${price} -`;
+
+            let deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "Deletar";
+            deleteBtn.classList.add("btn");
+            deleteBtn.classList.add("btn-danger");
+
+            deleteBtn.addEventListener("click", function () {
+              deleteGame(item);
+            });
+
+            let editBtn = document.createElement("button");
+            editBtn.innerText = "Editar";
+            editBtn.classList.add("btn");
+            editBtn.classList.add("btn-primary");
+
+            editBtn.addEventListener("click", function () {
+              loadForm(item);
+            });
+
+            item.appendChild(deleteBtn);
+            item.appendChild(editBtn);
+
+            list.appendChild(item);
+          });
+        })
+        .catch((erro) => {
+          console.log(erro);
+        });
+    </script>
+  </body>
+</html>

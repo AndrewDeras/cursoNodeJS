@@ -26,6 +26,20 @@ let dataBase = {
       year: 2013,
       price: 50
     }
+  ],
+  users: [
+    {
+      id: 39,
+      name: 'Andrew Barbosa',
+      email: 'andrew@email.com',
+      password: '12345'
+    },
+    {
+      id: 44,
+      name: 'Lewis Hamilton',
+      email: 'lewis@email.com',
+      password: '44444'
+    },
   ]
 };
 
@@ -104,6 +118,36 @@ app.put('/game/:id', (req, res) => {
   } else {
     res.sendStatus(400);
   }
+});
+
+app.post('/auth', (req, res) => {
+  const { email, password } = req.body;
+
+  if (email != undefined) {
+
+    const user = dataBase.users.find((user) => email === user.email);
+
+    if (user != undefined) {
+
+      if (user.password === password) {
+        res.status = 200;
+        res.json({ token: "Token falso." });
+      } else {
+        res.status = 401;
+        res.json({ err: "Credenciais inválidas." });
+      }
+
+
+    } else {
+      res.status = 404;
+      res.json({ err: "O email enviado não existe na base de dados." });
+    }
+
+  } else {
+    res.status = 400;
+    res.json({ err: "O e-mail enviado é inválido" });
+  }
+
 });
 
 app.listen(3939, () => {

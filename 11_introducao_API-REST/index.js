@@ -9,6 +9,28 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+function auth(req, res, next) {
+  const authToken = req.headers['authorization'];
+
+  if (authToken != undefined) {
+    const token = authToken.split(" ").pop();
+
+    jwt.verify(token, jwtSecret, (error, data) => {
+      if (error) {
+        res.status(401);
+        res.json({ err: "Acesso negado." });
+      } else {
+        req.token = token;
+        req.loggedUser = { id: data.id, email: data.email };
+        next();
+      };
+    });
+  } else {
+    res.status(401);
+    res.json({ err: "Acesso negado" });
+  };
+};
+
 let dataBase = {
   games: [
     {
@@ -46,9 +68,9 @@ let dataBase = {
   ]
 };
 
-app.get('/games', (req, res) => {
+app.get('/games', auth, (req, res) => {
   res.statusCode = 200;
-  res.json(dataBase.games);
+  res.json({ user: req.loggedUser, games: dataBase.games });
 });
 
 app.get('/game/:id', (req, res) => {

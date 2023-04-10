@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+
+const jwtSecret = "asdfasdfasdf";
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
@@ -130,21 +133,28 @@ app.post('/auth', (req, res) => {
     if (user != undefined) {
 
       if (user.password === password) {
-        res.status = 200;
-        res.json({ token: "Token falso." });
+        jwt.sign({ id: user.id, email: user.email }, jwtSecret, { expiresIn: "48h" },
+          (err, token) => {
+            if (err) {
+              res.status(400);
+              res.json({ err: "Falha interna." });
+            } else {
+              res.status(200);
+              res.json({ token: token });
+            };
+          });
+
       } else {
-        res.status = 401;
+        res.status(401);
         res.json({ err: "Credenciais inválidas." });
       }
-
-
     } else {
-      res.status = 404;
+      res.status(404);
       res.json({ err: "O email enviado não existe na base de dados." });
     }
 
   } else {
-    res.status = 400;
+    res.status(400);
     res.json({ err: "O e-mail enviado é inválido" });
   }
 

@@ -70,7 +70,7 @@ let dataBase = {
 
 app.get('/games', auth, (req, res) => {
   res.statusCode = 200;
-  res.json({ user: req.loggedUser, games: dataBase.games });
+  res.json(dataBase.games);
 });
 
 app.get('/game/:id', (req, res) => {

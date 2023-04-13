@@ -69,8 +69,32 @@ let dataBase = {
 };
 
 app.get('/games', auth, (req, res) => {
+
+  const HATEOAS = [
+    {
+      href: "http://localhost:3939/game/0",
+      method: "DELETE",
+      rel: "delete_game"
+    },
+    {
+      href: "http://localhost:3939/game/0",
+      method: "GET",
+      rel: "get_game"
+    },
+    {
+      href: "http://localhost:3939/game/0",
+      method: "UPDATE",
+      rel: "update_game"
+    },
+    {
+      href: "http://localhost:3939/auth",
+      method: "POST",
+      rel: "login"
+    },
+  ]
+
   res.statusCode = 200;
-  res.json(dataBase.games);
+  res.json({ games: dataBase.games, _links: HATEOAS });
 });
 
 app.get('/game/:id', (req, res) => {
@@ -79,8 +103,27 @@ app.get('/game/:id', (req, res) => {
     let id = parseInt(req.params.id);
     const game = dataBase.games.find(game => game.id === id);
     if (game != undefined) {
+
+      const HATEOAS = [
+        {
+          href: "http://localhost:3939/game/" + id,
+          method: "DELETE",
+          rel: "delete_game"
+        },
+        {
+          href: "http://localhost:3939/game/" + id,
+          method: "GET",
+          rel: "get_game"
+        },
+        {
+          href: "http://localhost:3939/game/" + id,
+          method: "UPDATE",
+          rel: "update_game"
+        }
+      ]
+
       res.statusCode = 200;
-      res.json(game);
+      res.json({ game: game, _links: HATEOAS });
     } else {
       res.sendStatus(404);
     }

@@ -91,3 +91,26 @@ database.select()
 */
 
 
+/**order by
+ 
+  database.select().table("games").orderBy("price", "desc")
+   .then((data) => { console.log(data); })
+   .catch((error) => { console.log(error); });
+ 
+*/
+
+/**JOIN
+ database.insert({ name: "Electronic Arts", game_id: 1 }).table("studios")
+   .then((data) => { console.log(data); })
+   .catch((error) => { console.log(error); });
+   
+   database.select(["games.*", "studios.name AS studio_name"])
+     .table("games").innerJoin("studios", "studios.game_id", "games.id").where("games.id", 3)
+     .then((data) => { console.log(data); })
+     .catch((error) => { console.log(error); });
+*/
+
+database.select(["games.*", "studios.name AS studio_name"])
+  .table("games").leftJoin("studios")
+  .then((data) => { console.log(data); })
+  .catch((error) => { console.log(error); });

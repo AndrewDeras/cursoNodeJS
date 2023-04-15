@@ -110,7 +110,40 @@ database.select()
      .catch((error) => { console.log(error); });
 */
 
-database.select(["games.*", "studios.name AS studio_name"])
-  .table("games").leftJoin("studios")
-  .then((data) => { console.log(data); })
-  .catch((error) => { console.log(error); });
+/**Inner join many to many 
+ database.select([
+   "games.name as Game",
+   "studios.name AS Studio",
+   "games.price AS Price"
+ ])
+   .table("game_studios")
+   .innerJoin("games", "games.id", "game_studios.game_id")
+   .innerJoin("studios", "studios.id", "game_studios.studio_id")
+   .then((data) => { console.log(data); })
+   .catch((error) => { console.log(error); });
+
+*/
+
+
+
+/**Transactions
+
+*/
+async function transactionTest() {
+
+  try {
+
+    await database.transaction(async (trans) => {
+
+      await database.insert({ name: "Blizzard" }).table("studios");
+      await database.insert({ name: "Activision" }).table("studios");
+      await database.insert({ name: "Mojang" }).table("studios");
+      await database.insert({ name: "Pixar" }).table("studios");
+      await database.insert({ name: "Coder Master" }).table("studios");
+
+    });
+  } catch (error) {
+    console.log(error);
+  };
+}
+
